@@ -1,6 +1,9 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header>
+      <q-img src="../assets/mountain.jpg"
+        class="header-image absolute-top">
+      </q-img>
       <q-toolbar>
         <q-btn
           flat
@@ -11,42 +14,74 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title>
-          Quasar App
+        <q-toolbar-title class ="text-weight-bolder q-pa-xl">
+          To Do List
         </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
+        <div class="text-body2 text-weight-medium">{{ todaysDate }}</div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
-      <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
+      <q-drawer
+        v-model="leftDrawerOpen"
+        show-if-above
+        :width="250"
+        :breakpoint="600"
+      >
+        <q-scroll-area style="height: calc(100% - 127.5px); margin-top: 150px; border-right: 1px solid #ddd">
+          <q-list padding>
+            <q-item 
+              clickable
+              exact
+              v-ripple
+              to="/"
+              >
+              <q-item-section avatar>
+                <q-icon name="list"></q-icon>
+              </q-item-section>
 
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
-    </q-drawer>
+              <q-item-section>
+                To Do
+              </q-item-section>
+            </q-item>
+            <q-item
+              clickable
+              v-ripple
+              exact
+              to="/help"
+              >
+              <q-item-section avatar>
+                <q-icon name="help"></q-icon>
+              </q-item-section>
+
+              <q-item-section>
+                Help
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-scroll-area>
+
+        <q-img class="absolute-top" src="../assets/mountain.jpg" style="height: 127.5px;">
+          <div class="absolute-bottom bg-transparent">
+            <q-avatar size="56px" class="q-mb-sm">
+              <img src="../assets/logo.png">
+            </q-avatar>
+            <div class="text-weight-bold">Miujiq Technology</div>
+            <div>miujiqtech.com</div>
+          </div>
+        </q-img>
+      </q-drawer>
 
     <q-page-container>
+      <keep-alive>
       <router-view />
+      </keep-alive>
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
 import EssentialLink from 'components/EssentialLink.vue'
+import { date } from 'quasar'
 
 const linksList = [
   {
@@ -101,6 +136,13 @@ export default defineComponent({
   components: {
     EssentialLink
   },
+  computed: {
+    todaysDate(){
+      const timeStamp = Date.now()
+      return date.formatDate(timeStamp, 'dddd, DD MMMM YYYY')
+    }
+
+  },
 
   setup () {
     const leftDrawerOpen = ref(false)
@@ -115,3 +157,12 @@ export default defineComponent({
   }
 })
 </script>
+<style lang="scss">
+.header-image{
+  height:100%;
+  z-index: -1;
+  filter: grayscale(100%);
+  opacity:0.5;
+}
+
+</style>
