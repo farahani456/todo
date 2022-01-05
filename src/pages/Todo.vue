@@ -1,10 +1,11 @@
 <template>
   <q-page class="bg-grey-3 column">
     <div class="q-pa-md bg-secondary row" style="color:white">
-      <q-input 
+      <q-input
+        @keyup.enter="addTasks"
         filled 
         bottom-slots 
-        v-model="tasks" 
+        v-model="newTasks" 
         placeholder="Add Task" 
         dense
         bg-color="white"
@@ -14,11 +15,18 @@
         </template>
 
         <template v-slot:append>
-          <q-btn round dense flat icon="add"></q-btn>
+          <q-btn
+            @click="addTasks"
+            round
+            dense
+            flat
+            icon="add"
+            >
+            </q-btn>
         </template>
       </q-input>
     </div>
-    <h5 class="q-mt-none">TO DO </h5>
+    <h5 class="q-mt-none text-center">TO DO </h5>
     <q-list 
       class="bg-white"
       separator
@@ -57,6 +65,15 @@
       </q-item>
 
     </q-list>
+    <div class="no-tasks absolute-center">
+      <div class="text-center text-h5 text-grey">
+        <q-icon 
+          name="check"
+          size="100px"
+          color="text-grey"/>
+        No Tasks
+      </div>
+    </div>
   </q-page>
 </template>
 
@@ -66,19 +83,20 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   data () {
     return {
+      newTasks: '',
       tasks: [
-        {
-        title: 'Banana 1 ',
-        done: false
-        },
-        {
-        title: 'Banana 2',
-        done: false
-        },
-        {
-        title: 'Banana 3',
-        done: false
-        }
+        // {
+        // title: 'Banana 1 ',
+        // done: false
+        // },
+        // {
+        // title: 'Banana 2',
+        // done: false
+        // },
+        // {
+        // title: 'Banana 3',
+        // done: false
+        // }
       ]
 
     }
@@ -95,8 +113,16 @@ export default defineComponent({
     this.$q.notify("Task Deleted")
       })
 
+  },
+  addTasks () {
+    console.log("Add Task")
+    this.tasks.push({
+      title: this.newTasks,
+      done: false
+    })
+    this.newTasks = ''
   }  
-  }
+}
 
 
 })
